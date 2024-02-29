@@ -21,3 +21,12 @@ public override void WriteHeaders ()
 	}
 }
 //hello
+if (t.IsByRef) {
+				var et = t.GetElementType ();
+				var typecode = Type.GetTypeCode (et);
+
+				if (typecode == TypeCode.Decimal || typecode == TypeCode.DateTime) // This is boxed into NSDecimalNumber/NSDate
+					return GetTypeName (et) + "_Nonnull * _Nullable";
+
+				return GetTypeName (et) + " * " + (et.IsValueType ? "_Nullable" : "_Nonnull");
+			}
